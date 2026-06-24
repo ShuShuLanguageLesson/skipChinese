@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>パンダタクシーで中国語！｜乗車フレーズ復習クイズ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --taxi:#FDC72F;       /* タクシーの黄色 */
+    --taxi-edge:#E2A60C;
+    --asphalt:#2D2F36;    /* 路面・文字 */
+    --asphalt-2:#3B3E47;
+    --sky-top:#FFE7AE;    /* 夕方の街の空 */
+    --sky-bot:#FFC773;
+    --go:#22B573;         /* 正解 */
+    --go-soft:#dff6ea;
+    --stop:#FF5B4D;       /* 不正解 */
+    --stop-soft:#ffe4e1;
+    --amber:#FFB02E;
+    --card:#FFFDF7;       /* カード面（温かい白） */
+    --ink-2:#8C846F;      /* 補助テキスト（ピンイン等） */
+    --line:#EFE7D6;
+    --font-display:"Baloo 2","M PLUS Rounded 1c",system-ui,sans-serif;
+    --font-jp:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
+    --font-cn:"PingFang SC","Hiragino Sans GB","Noto Sans SC","Source Han Sans SC","Microsoft YaHei","M PLUS Rounded 1c",sans-serif;
+    --shadow:0 14px 30px -16px rgba(60,40,0,.45);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    font-family:var(--font-jp);
+    color:var(--asphalt);
+    background:linear-gradient(180deg,var(--sky-top),var(--sky-bot));
+    min-height:100dvh;
+    display:flex;align-items:center;justify-content:center;
+    padding:18px;
+    -webkit-tap-highlight-color:transparent;
+    overflow-x:hidden;
+  }
+  /* ふわっと浮かぶ雲（控えめ） */
+  body::before,body::after{
+    content:"";position:fixed;z-index:0;border-radius:50%;
+    background:rgba(255,255,255,.55);filter:blur(2px);pointer-events:none;
+  }
+  body::before{width:160px;height:60px;top:9%;left:-40px;box-shadow:90px 18px 0 -6px rgba(255,255,255,.5);animation:drift 26s linear infinite}
+  body::after{width:120px;height:46px;top:22%;right:-30px;box-shadow:-70px 26px 0 -8px rgba(255,255,255,.45);animation:drift 34s linear infinite reverse}
+  @keyframes drift{from{transform:translateX(0)}to{transform:translateX(40px)}}
+
+  .app{
+    position:relative;z-index:1;width:100%;max-width:480px;
+    background:var(--card);
+    border-radius:28px;
+    box-shadow:var(--shadow);
+    border:3px solid #fff;
+    overflow:hidden;
+  }
+  .pad{padding:22px 20px 24px}
+
+  /* ===== 走行シーン（進捗バー兼ねる・主役） ===== */
+  .scene{position:relative;height:128px;background:linear-gradient(180deg,#FFF0CE 0%,#FFE3A6 52%);overflow:hidden}
+  .sun{position:absolute;top:14px;right:18px;width:34px;height:34px;border-radius:50%;background:#FFD24A;box-shadow:0 0 0 7px rgba(255,210,74,.28)}
+  .road{position:absolute;left:0;right:0;bottom:0;height:62px;background:linear-gradient(180deg,var(--asphalt-2),var(--asphalt))}
+  .road::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:#E9C24A}
+  .lane{position:absolute;top:50%;left:0;right:0;height:4px;transform:translateY(-50%);
+        background:repeating-linear-gradient(90deg,#F4D779 0 22px,transparent 22px 42px);opacity:.85}
+  .track{position:absolute;left:34px;right:54px;top:50%;height:0}
+  .dots{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);display:flex;justify-content:space-between;align-items:center}
+  .dot{width:9px;height:9px;border-radius:50%;background:#5b5f6b;border:2px solid #20222a;transition:transform .25s,background .25s}
+  .dot.ok{background:var(--go);box-shadow:0 0 8px rgba(34,181,115,.7)}
+  .dot.ng{background:var(--stop);box-shadow:0 0 8px rgba(255,91,77,.7)}
+  .dot.here{transform:scale(1.5)}
+  .taxi{position:absolute;top:50%;left:0;width:84px;margin-top:-46px;transform:translateX(-50%);
+        transition:left .55s cubic-bezier(.34,1.3,.5,1)}
+  .taxi.run{animation:bob .5s ease}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}40%{transform:translateX(-50%) translateY(-6px)}}
+  .taxi.brake{animation:shake .4s}
+  @keyframes shake{0%,100%{transform:translateX(-50%)}20%{transform:translateX(-58%) rotate(-2deg)}50%{transform:translateX(-44%) rotate(2deg)}80%{transform:translateX(-52%)}}
+  .goal{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:36px;text-align:center}
+  .goal .lbl{font-family:var(--font-jp);font-weight:700;font-size:10px;color:#fff;background:rgba(0,0,0,.28);border-radius:6px;padding:1px 4px;margin-top:2px;display:inline-block}
+  .startpost{position:absolute;left:6px;bottom:6px;font-size:9px;font-weight:700;color:#fff;opacity:.85}
+
+  /* ===== HUD ===== */
+  .hud{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 2px 4px}
+  .hearts{display:flex;gap:3px;font-size:18px;line-height:1;min-width:64px}
+  .hearts .h{transition:transform .3s,opacity .3s}
+  .hearts .h.lost{opacity:.25;transform:scale(.8) rotate(12deg)}
+  .score{font-family:var(--font-display);font-weight:800;font-size:22px;letter-spacing:.5px}
+  .score small{font-family:var(--font-jp);font-weight:700;font-size:11px;color:var(--ink-2);margin-left:2px}
+  .combo{min-width:64px;text-align:right;font-family:var(--font-display);font-weight:800;font-size:15px;color:var(--amber);opacity:0;transition:opacity .2s,transform .2s}
+  .combo.on{opacity:1}
+  .combo.pump{transform:scale(1.18)}
+
+  /* ===== 問題カード ===== */
+  .qwrap{margin-top:8px}
+  .qlabel{font-weight:700;font-size:13px;color:var(--ink-2);text-align:center;margin-bottom:8px}
+  .qcard{background:linear-gradient(180deg,#fff,#FFFBF1);border:2px solid var(--line);border-radius:20px;
+         padding:20px 16px;min-height:108px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+  .q-cn{font-family:var(--font-cn);font-weight:700;font-size:30px;letter-spacing:1px}
+  .q-py{font-family:var(--font-display);font-weight:600;font-size:17px;color:var(--ink-2);letter-spacing:.4px}
+  .q-jp{font-family:var(--font-jp);font-weight:700;font-size:21px;line-height:1.4}
+  .listenbtn{appearance:none;border:none;cursor:pointer;background:var(--taxi);color:var(--asphalt);
+             width:74px;height:74px;border-radius:50%;font-size:30px;box-shadow:0 6px 0 var(--taxi-edge);transition:transform .08s}
+  .listenbtn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--taxi-edge)}
+  .speak{appearance:none;border:none;background:#fff;border:2px solid var(--line);border-radius:50%;
+         width:34px;height:34px;cursor:pointer;font-size:16px;line-height:1;margin-top:2px;transition:transform .08s}
+  .speak:active{transform:scale(.9)}
+
+  /* ===== 選択肢 ===== */
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .opt{appearance:none;cursor:pointer;font-family:inherit;text-align:center;
+       background:#fff;border:2px solid var(--line);border-radius:16px;padding:13px 8px;
+       box-shadow:0 4px 0 #ece3d1;transition:transform .07s,box-shadow .07s,background .2s,border-color .2s;
+       display:flex;flex-direction:column;align-items:center;gap:2px;min-height:58px;justify-content:center}
+  .opt:active{transform:translateY(3px);box-shadow:0 1px 0 #ece3d1}
+  .opt:disabled{cursor:default}
+  .opt .om{font-weight:700;font-size:16px;line-height:1.25}
+  .opt.cn .om{font-family:var(--font-cn);font-size:18px;letter-spacing:.5px}
+  .opt .os{font-family:var(--font-display);font-weight:600;font-size:11px;color:var(--ink-2)}
+  .opt.correct{background:var(--go-soft);border-color:var(--go);box-shadow:0 4px 0 #b6e6cf}
+  .opt.correct::after{content:"✓";position:absolute;top:4px;right:8px;color:var(--go);font-weight:800;font-size:13px}
+  .opt.wrong{background:var(--stop-soft);border-color:var(--stop);box-shadow:0 4px 0 #f4c4be}
+  .opt.wrong::after{content:"✕";position:absolute;top:4px;right:8px;color:var(--stop);font-weight:800;font-size:13px}
+  .opt.dim{opacity:.45}
+
+  /* ===== フィードバック帯 ===== */
+  .feedback{margin-top:14px;min-height:74px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+  .verdict{font-family:var(--font-display);font-weight:800;font-size:19px}
+  .verdict.ok{color:var(--go)}.verdict.ng{color:var(--stop)}
+  .answer-chip{background:#fff;border:2px solid var(--line);border-radius:14px;padding:9px 14px;text-align:center;max-width:100%}
+  .answer-chip .ac-cn{font-family:var(--font-cn);font-weight:700;font-size:18px}
+  .answer-chip .ac-py{font-family:var(--font-display);font-weight:600;font-size:12px;color:var(--ink-2);margin:0 6px}
+  .answer-chip .ac-jp{font-family:var(--font-jp);font-weight:700;font-size:13px;color:var(--asphalt);display:block;margin-top:1px}
+  .next{appearance:none;border:none;cursor:pointer;font-family:var(--font-jp);font-weight:800;font-size:16px;color:#fff;
+        background:var(--asphalt);border-radius:14px;padding:12px 28px;box-shadow:0 5px 0 #16181d;transition:transform .08s}
+  .next:active{transform:translateY(3px);box-shadow:0 2px 0 #16181d}
+
+  /* ===== 共通ボタン（大） ===== */
+  .btn{appearance:none;border:none;cursor:pointer;font-family:var(--font-jp);font-weight:800;border-radius:18px;transition:transform .08s}
+  .btn-go{font-size:20px;color:var(--asphalt);background:var(--taxi);padding:16px 22px;box-shadow:0 7px 0 var(--taxi-edge);width:100%}
+  .btn-go:active{transform:translateY(4px);box-shadow:0 3px 0 var(--taxi-edge)}
+  .btn-ghost{font-size:15px;color:var(--asphalt);background:#fff;border:2px solid var(--line);padding:13px 18px;box-shadow:0 4px 0 #ece3d1}
+  .btn-ghost:active{transform:translateY(3px);box-shadow:0 1px 0 #ece3d1}
+
+  /* ===== スタート画面 ===== */
+  .home{text-align:center}
+  .mascot{width:128px;height:138px;margin:2px auto -4px}
+  .mascot.wave svg{animation:wave 2.4s ease-in-out infinite}
+  @keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-4deg)}}
+  .title{font-family:var(--font-display);font-weight:800;font-size:27px;line-height:1.15;margin:4px 0 2px}
+  .subtitle{font-weight:700;font-size:13px;color:var(--ink-2);margin-bottom:14px}
+  .course{background:linear-gradient(180deg,#fff,#FFFAEF);border:2px dashed var(--taxi-edge);border-radius:16px;padding:12px 12px 13px;margin-bottom:14px}
+  .course h3{font-family:var(--font-jp);font-weight:800;font-size:12px;color:var(--ink-2);margin:0 0 8px;letter-spacing:1px}
+  .signs{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+  .sign{font-weight:700;font-size:13px;background:var(--asphalt);color:#fff;border-radius:999px;padding:5px 13px;position:relative}
+  .sign .em{margin-right:4px}
+  .toggles{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+  .toggle{display:flex;align-items:center;justify-content:space-between;background:#fff;border:2px solid var(--line);border-radius:14px;padding:11px 14px;cursor:pointer}
+  .toggle .tl{font-weight:700;font-size:14px}
+  .toggle .td{font-size:11px;color:var(--ink-2)}
+  .sw{width:50px;height:28px;border-radius:999px;background:#d9d2c2;position:relative;flex:none;transition:background .2s}
+  .sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .2s}
+  .toggle.on .sw{background:var(--go)}
+  .toggle.on .sw::after{left:25px}
+  .tip{font-size:11px;color:var(--ink-2);background:#FFF6E0;border-radius:12px;padding:9px 12px;margin-top:14px;line-height:1.5}
+  .tip b{color:var(--asphalt)}
+
+  /* ===== リザルト画面 ===== */
+  .result{text-align:center}
+  .result .mascot{margin-bottom:2px}
+  .arrive{font-family:var(--font-display);font-weight:800;font-size:24px;margin:2px 0 12px}
+  .stamp{display:inline-block;font-family:var(--font-jp);font-weight:800;font-size:20px;color:var(--stop);
+         border:3px solid var(--stop);border-radius:14px;padding:8px 18px;transform:rotate(-4deg);margin:4px 0 16px;
+         background:rgba(255,91,77,.06)}
+  .stamp.gold{color:#C98A00;border-color:#E2A60C;background:rgba(226,166,12,.08)}
+  .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:18px}
+  .stat{background:#FFFAEF;border:2px solid var(--line);border-radius:14px;padding:11px 4px}
+  .stat .sv{font-family:var(--font-display);font-weight:800;font-size:22px;line-height:1}
+  .stat .sk{font-size:11px;color:var(--ink-2);font-weight:700;margin-top:4px}
+  .result-btns{display:flex;gap:10px}
+  .result-btns .btn{flex:1}
+
+  .foot{text-align:center;font-size:10px;color:var(--ink-2);padding:0 0 14px;font-weight:700;letter-spacing:.5px}
+
+  .hidden{display:none!important}
+
+  /* 紙吹雪 */
+  .confetti{position:fixed;top:-14px;width:9px;height:14px;z-index:50;border-radius:2px;pointer-events:none;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(105vh) rotate(540deg);opacity:.9}}
+
+  @media (max-width:380px){
+    .q-cn{font-size:26px}.q-jp{font-size:19px}.title{font-size:24px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 走行シーン -->
+  <div class="scene">
+    <div class="sun"></div>
+    <div class="road">
+      <div class="lane"></div>
+      <div class="track">
+        <div class="dots" id="dots"></div>
+        <div class="taxi" id="taxi"></div>
+      </div>
+      <div class="goal"><div id="goalflag"></div><span class="lbl">目的地</span></div>
+      <span class="startpost">出発</span>
+    </div>
+  </div>
+
+  <div class="pad">
+
+    <!-- ===== スタート画面 ===== -->
+    <section id="screen-home" class="home">
+      <div class="mascot wave" id="home-mascot"></div>
+      <div class="title">パンダタクシーで中国語！</div>
+      <div class="subtitle">～ 乗車フレーズ復習クイズ ～</div>
+
+      <div class="course">
+        <h3>今日のコース（全13フレーズ）</h3>
+        <div class="signs">
+          <span class="sign"><span class="em">⬆️</span>進む</span>
+          <span class="sign"><span class="em">↪️</span>曲がる</span>
+          <span class="sign"><span class="em">🛑</span>止める</span>
+          <span class="sign"><span class="em">⚡</span>とっさ</span>
+        </div>
+      </div>
+
+      <div class="toggles">
+        <div class="toggle on" id="tg-pinyin">
+          <div><div class="tl">ピンイン表示</div><div class="td">中国語にピンインを添える</div></div>
+          <div class="sw"></div>
+        </div>
+        <div class="toggle on" id="tg-sound">
+          <div><div class="tl">音声・効果音</div><div class="td">中国語の読み上げと効果音</div></div>
+          <div class="sw"></div>
+        </div>
+        <div class="toggle on" id="tg-hard">
+          <div><div class="tl">ハート制（ミス3回まで）</div><div class="td">OFFでミスしても最後まで走れます</div></div>
+          <div class="sw"></div>
+        </div>
+      </div>
+
+      <button class="btn btn-go" id="btn-start">🚕 乗車スタート</button>
+      <div class="tip" id="home-tip"></div>
+    </section>
+
+    <!-- ===== クイズ画面 ===== -->
+    <section id="screen-quiz" class="hidden">
+      <div class="hud">
+        <div class="hearts" id="hearts"></div>
+        <div class="score" id="score">0<small>点</small></div>
+        <div class="combo" id="combo"></div>
+      </div>
+      <div class="qwrap">
+        <div class="qlabel" id="qlabel"></div>
+        <div class="qcard" id="qcard"></div>
+        <div class="opts" id="opts"></div>
+        <div class="feedback" id="feedback"></div>
+      </div>
+    </section>
+
+    <!-- ===== リザルト画面 ===== -->
+    <section id="screen-result" class="result hidden">
+      <div class="mascot" id="result-mascot"></div>
+      <div class="arrive" id="arrive-text"></div>
+      <div id="rank-stamp"></div>
+      <div class="stats">
+        <div class="stat"><div class="sv" id="st-correct">0</div><div class="sk">正解</div></div>
+        <div class="stat"><div class="sv" id="st-combo">0</div><div class="sk">最高コンボ</div></div>
+        <div class="stat"><div class="sv" id="st-score">0</div><div class="sk">スコア</div></div>
+      </div>
+      <div class="result-btns">
+        <button class="btn btn-go" id="btn-retry">🔄 もう一回</button>
+        <button class="btn btn-ghost" id="btn-home">コース選択へ</button>
+      </div>
+    </section>
+
+  </div>
+  <div class="foot">中国タクシー乗車フレーズ・復習クイズ</div>
+</div>
+
+<script>
+/* ============================================================
+   フレーズデータ（簡体字＋ピンイン＋日本語）※アップロード4枚に対応
+   ============================================================ */
+const PHRASES = [
+  // 進む
+  {cn:"一直往前开",        py:"yìzhí wǎng qián kāi",        jp:"このまま直進してください", cat:"進む"},
+  {cn:"往前开一点",        py:"wǎng qián kāi yìdiǎn",       jp:"もう少し前に進んで",     cat:"進む"},
+  {cn:"过了红绿灯",        py:"guòle hónglǜdēng",           jp:"信号を過ぎたら",        cat:"進む"},
+  // 曲がる
+  {cn:"前面右转",          py:"qiánmiàn yòu zhuǎn",         jp:"この先で右折",          cat:"曲がる"},
+  {cn:"前面左转",          py:"qiánmiàn zuǒ zhuǎn",         jp:"この先で左折",          cat:"曲がる"},
+  {cn:"在下一个路口右拐",  py:"zài xià yí ge lùkǒu yòu guǎi", jp:"次の交差点で右に曲がって", cat:"曲がる"},
+  // 止める・降りる
+  {cn:"在这儿停一下",      py:"zài zhèr tíng yíxià",        jp:"ここで止めてください",   cat:"止める"},
+  {cn:"靠边停",            py:"kào biān tíng",              jp:"路肩に寄せて止めて",     cat:"止める"},
+  {cn:"就在前面那个路口停",py:"jiù zài qiánmiàn nàge lùkǒu tíng", jp:"その先の交差点で止めて", cat:"止める"},
+  {cn:"到了，就这里",      py:"dào le, jiù zhèlǐ",          jp:"着きました、ここで大丈夫です", cat:"止める"},
+  // とっさのひとこと
+  {cn:"慢一点",            py:"màn yìdiǎn",                 jp:"ちょっとゆっくり",       cat:"とっさ"},
+  {cn:"等一下",            py:"děng yíxià",                 jp:"ちょっと待って",        cat:"とっさ"},
+  {cn:"停！",              py:"tíng",                       jp:"止まって！（緊急時）",   cat:"とっさ"},
+];
+
+const TIPS = [
+  "💡 <b>「右拐／左拐（guǎi）」</b>は口語的。運転手さんとの会話ではこちらもよく使います。",
+  "💡 緊急のときは <b>「停！（tíng）」</b>のひと言でも通じます。",
+  "💡 <b>「一点（yìdiǎn）」</b>を付けると「ちょっと〜」と柔らかい言い方に。",
+  "💡 信号は <b>「红绿灯（hónglǜdēng）」</b>＝「赤・緑・黄の灯」。",
+  "💡 <b>「靠边（kào biān）」</b>は「端に寄る」。路肩に止めてほしいときに。",
+];
+
+/* ============================================================
+   イラスト（SVG）
+   ============================================================ */
+function panda(mood){
+  let eyes, mouth, extra="";
+  const base = `
+    <circle cx="30" cy="34" r="20" fill="#23252B"/><circle cx="30" cy="34" r="9" fill="#3a3d45"/>
+    <circle cx="90" cy="34" r="20" fill="#23252B"/><circle cx="90" cy="34" r="9" fill="#3a3d45"/>
+    <circle cx="60" cy="70" r="46" fill="#fff" stroke="#ece4d4" stroke-width="2"/>
+    <ellipse cx="45" cy="64" rx="13" ry="17" fill="#23252B" transform="rotate(-18 45 64)"/>
+    <ellipse cx="75" cy="64" rx="13" ry="17" fill="#23252B" transform="rotate(18 75 64)"/>
+    <ellipse cx="60" cy="83" rx="6" ry="4.5" fill="#23252B"/>`;
+  if(mood==="cheer"){
+    eyes = `<path d="M40 64 q5 -8 11 0" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+            <path d="M70 64 q5 -8 11 0" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round"/>`;
+    mouth = `<path d="M50 88 q10 16 20 0 z" fill="#C0394A"/><path d="M55 96 q5 5 10 0" fill="#e76b7d"/>`;
+    extra = `<text x="14" y="26" font-size="14" fill="#FFC72F">✦</text><text x="100" y="30" font-size="12" fill="#FFC72F">✦</text>
+             <ellipse cx="34" cy="84" rx="7" ry="4" fill="#FFB3BD" opacity=".8"/><ellipse cx="86" cy="84" rx="7" ry="4" fill="#FFB3BD" opacity=".8"/>`;
+  } else if(mood==="happy"){
+    eyes = `<circle cx="46" cy="66" r="5.5" fill="#fff"/><circle cx="47" cy="68" r="3" fill="#23252B"/><circle cx="45.5" cy="65.5" r="1.1" fill="#fff"/>
+            <circle cx="74" cy="66" r="5.5" fill="#fff"/><circle cx="73" cy="68" r="3" fill="#23252B"/><circle cx="72.5" cy="65.5" r="1.1" fill="#fff"/>`;
+    mouth = `<path d="M51 90 q9 9 18 0" stroke="#23252B" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+    extra = `<ellipse cx="34" cy="86" rx="6.5" ry="3.6" fill="#FFB3BD" opacity=".75"/><ellipse cx="86" cy="86" rx="6.5" ry="3.6" fill="#FFB3BD" opacity=".75"/>`;
+  } else if(mood==="dizzy"){
+    eyes = `<path d="M41 61 l9 9 M50 61 l-9 9" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+            <path d="M70 61 l9 9 M79 61 l-9 9" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`;
+    mouth = `<path d="M51 92 q4 -5 9 0 t9 0" stroke="#23252B" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+    extra = `<text x="90" y="40" font-size="13" fill="#7fb6ff">@</text>`;
+  } else if(mood==="sad"){
+    eyes = `<circle cx="46" cy="68" r="5.5" fill="#fff"/><circle cx="46" cy="70" r="3" fill="#23252B"/>
+            <circle cx="74" cy="68" r="5.5" fill="#fff"/><circle cx="74" cy="70" r="3" fill="#23252B"/>`;
+    mouth = `<path d="M52 95 q8 -8 16 0" stroke="#23252B" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+    extra = `<path d="M88 58 q5 9 0 14 a4.5 5.5 0 1 1 0 -14 z" fill="#7fc8ff"/>`;
+  } else { // normal
+    eyes = `<circle cx="46" cy="66" r="5.5" fill="#fff"/><circle cx="46" cy="67" r="3" fill="#23252B"/>
+            <circle cx="74" cy="66" r="5.5" fill="#fff"/><circle cx="74" cy="67" r="3" fill="#23252B"/>`;
+    mouth = `<path d="M55 91 q5 4 10 0" stroke="#23252B" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+  }
+  return `<svg viewBox="0 0 120 130" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">${base}${eyes}${mouth}${extra}</svg>`;
+}
+
+function taxiSVG(){
+  return `<svg viewBox="0 0 120 80" width="100%" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="60" cy="73" rx="46" ry="5" fill="rgba(0,0,0,.22)"/>
+    <!-- 屋根のTAXIサイン -->
+    <rect x="48" y="6" width="26" height="11" rx="3" fill="#fff" stroke="#23252B" stroke-width="1.4"/>
+    <text x="61" y="14.6" font-size="7" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" fill="#23252B">TAXI</text>
+    <!-- 車体 -->
+    <path d="M30 40 q5 -22 24 -22 h20 q15 0 22 22 z" fill="#FDC72F" stroke="#E2A60C" stroke-width="1.6"/>
+    <rect x="8" y="40" width="104" height="26" rx="11" fill="#FDC72F" stroke="#E2A60C" stroke-width="1.6"/>
+    <!-- 窓＋パンダ運転手 -->
+    <path d="M36 38 q4 -15 17 -15 h17 q11 0 15 15 z" fill="#BFE6FF"/>
+    <rect x="58" y="23" width="2.2" height="15" fill="#9fd0ee"/>
+    <circle cx="64" cy="32" r="7.2" fill="#fff"/>
+    <circle cx="59.5" cy="26.5" r="3" fill="#23252B"/><circle cx="68.5" cy="26.5" r="3" fill="#23252B"/>
+    <circle cx="61.5" cy="32" r="1.5" fill="#23252B"/><circle cx="66.5" cy="32" r="1.5" fill="#23252B"/>
+    <circle cx="64" cy="35" r="1.1" fill="#23252B"/>
+    <!-- タクシーのチェッカー帯 -->
+    <g>
+      <rect x="20" y="52" width="6" height="6" fill="#23252B"/><rect x="32" y="52" width="6" height="6" fill="#23252B"/>
+      <rect x="44" y="52" width="6" height="6" fill="#23252B"/><rect x="26" y="58" width="6" height="6" fill="#23252B"/>
+      <rect x="38" y="58" width="6" height="6" fill="#23252B"/>
+    </g>
+    <!-- ヘッドライト・バンパー -->
+    <circle cx="108" cy="50" r="3.6" fill="#FFF6C9"/>
+    <rect x="10" y="62" width="100" height="4" rx="2" fill="#23252B" opacity=".15"/>
+    <!-- タイヤ -->
+    <circle cx="32" cy="66" r="10.5" fill="#23252B"/><circle cx="32" cy="66" r="4.6" fill="#9aa0aa"/>
+    <circle cx="90" cy="66" r="10.5" fill="#23252B"/><circle cx="90" cy="66" r="4.6" fill="#9aa0aa"/>
+  </svg>`;
+}
+
+function goalSVG(){
+  return `<svg viewBox="0 0 40 50" width="32" xmlns="http://www.w3.org/2000/svg">
+    <rect x="7" y="4" width="3" height="44" rx="1.5" fill="#6b5f4f"/>
+    <g>
+      <rect x="10" y="6" width="6" height="6" fill="#23252B"/><rect x="22" y="6" width="6" height="6" fill="#23252B"/>
+      <rect x="16" y="12" width="6" height="6" fill="#23252B"/><rect x="28" y="12" width="6" height="6" fill="#23252B"/>
+      <rect x="10" y="18" width="6" height="6" fill="#23252B"/><rect x="22" y="18" width="6" height="6" fill="#23252B"/>
+      <rect x="10" y="6" width="28" height="18" fill="none" stroke="#23252B" stroke-width="1.2"/>
+    </g>
+  </svg>`;
+}
+
+/* ============================================================
+   状態とユーティリティ
+   ============================================================ */
+const TOTAL = PHRASES.length;
+let S = {};
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function $(id){return document.getElementById(id);}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function sample(arr,n){return shuffle(arr).slice(0,n);}
+
+/* ----- 音声（効果音 / 中国語TTS） ----- */
+let actx=null, zhVoiceCached=undefined;
+function ensureAudio(){ if(!actx){ try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){} } if(actx&&actx.state==="suspended")actx.resume(); }
+function beep(seq,gain=0.07){
+  if(!S.sound||!actx) return;
+  let t=actx.currentTime;
+  seq.forEach(([f,d])=>{
+    const o=actx.createOscillator(),g=actx.createGain();
+    o.type="triangle";o.frequency.value=f;
+    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(gain,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+d);
+    o.connect(g);g.connect(actx.destination);o.start(t);o.stop(t+d);t+=d*0.92;
+  });
+}
+const sfxCorrect=()=>beep([[660,0.10],[880,0.14]]);
+const sfxWrong  =()=>beep([[200,0.16],[150,0.20]],0.06);
+const sfxArrive =()=>beep([[523,0.12],[659,0.12],[784,0.12],[1047,0.24]]);
+
+function getZhVoice(){
+  if(!("speechSynthesis" in window)) return null;
+  if(zhVoiceCached!==undefined) return zhVoiceCached;
+  const vs=speechSynthesis.getVoices()||[];
+  zhVoiceCached = vs.find(v=>/^zh(-|_)?CN/i.test(v.lang)) || vs.find(v=>/^zh/i.test(v.lang)) || null;
+  return zhVoiceCached;
+}
+if("speechSynthesis" in window){ speechSynthesis.onvoiceschanged=()=>{zhVoiceCached=undefined;getZhVoice();}; getZhVoice(); }
+function speak(text){
+  if(!S.sound||!("speechSynthesis" in window))return;
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text.replace(/[！，、。]/g," "));
+    u.lang="zh-CN";u.rate=0.88;
+    const v=getZhVoice(); if(v)u.voice=v;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* ============================================================
+   画面遷移
+   ============================================================ */
+function show(name){
+  ["home","quiz","result"].forEach(n=>$("screen-"+n).classList.toggle("hidden",n!==name));
+}
+
+/* ----- 走行シーン構築 ----- */
+function buildScene(){
+  $("goalflag").innerHTML=goalSVG();
+  $("taxi").innerHTML=taxiSVG();
+  const dots=$("dots");dots.innerHTML="";
+  for(let i=0;i<TOTAL;i++){const d=document.createElement("div");d.className="dot";dots.appendChild(d);}
+  placeTaxi(0);
+}
+function placeTaxi(i){
+  const pct = TOTAL>1 ? (i/(TOTAL-1))*100 : 0;
+  $("taxi").style.left=pct+"%";
+  [...$("dots").children].forEach((d,k)=>d.classList.toggle("here",k===i));
+}
+
+/* ============================================================
+   ゲーム本体
+   ============================================================ */
+function startGame(){
+  ensureAudio();
+  S = {
+    sound:$("tg-sound").classList.contains("on"),
+    pinyin:$("tg-pinyin").classList.contains("on"),
+    hard:$("tg-hard").classList.contains("on"),
+    queue:shuffle(PHRASES.map((_,i)=>i)),
+    idx:0, score:0, combo:0, maxCombo:0, correct:0, hearts:3, locked:false,
+  };
+  buildScene();
+  renderHearts();
+  $("score").innerHTML='0<small>点</small>';
+  $("combo").className="combo";
+  show("quiz");
+  renderQuestion();
+}
+
+function renderHearts(){
+  let h="";for(let i=0;i<3;i++)h+=`<span class="h ${i>=S.hearts?'lost':''}">❤️</span>`;
+  $("hearts").innerHTML = S.hard ? h : '<span class="td" style="font-size:11px;color:var(--ink-2);font-weight:700">れんしゅう</span>';
+}
+
+const DIM = {cn2jp:"jp", listen:"jp", jp2cn:"cn", py2cn:"cn"};
+const LABELS = {
+  cn2jp:"この中国語の意味は？",
+  jp2cn:"中国語でどう言う？",
+  py2cn:"このピンインの中国語は？",
+  listen:"🔊 聞こえた中国語の意味は？",
+};
+
+function pickType(){
+  const t=["cn2jp","jp2cn","py2cn"];
+  if(S.sound && ("speechSynthesis" in window) && getZhVoice()) t.push("listen");
+  return t[Math.floor(Math.random()*t.length)];
+}
+
+function renderQuestion(){
+  S.locked=false;
+  $("feedback").innerHTML="";
+  placeTaxi(S.idx);
+  const phrase = PHRASES[S.queue[S.idx]];
+  const type = pickType();
+  const dim = DIM[type];
+  const distract = sample(PHRASES.filter(p=>p!==phrase),3);
+  const opts = shuffle([phrase,...distract]);
+  S.current = {phrase,type,dim,opts};
+
+  $("qlabel").textContent = LABELS[type];
+
+  // 問題カード
+  const c=$("qcard");
+  if(type==="cn2jp"){
+    c.innerHTML = `<div class="q-cn">${phrase.cn}</div>`
+      + (S.pinyin?`<div class="q-py">${phrase.py}</div>`:``)
+      + (S.sound?`<button class="speak" id="qspeak" aria-label="読み上げ">🔊</button>`:``);
+  }else if(type==="jp2cn"){
+    c.innerHTML = `<div class="q-jp">${phrase.jp}</div>`;
+  }else if(type==="py2cn"){
+    c.innerHTML = `<div class="q-py" style="font-size:24px;color:var(--asphalt)">${phrase.py}</div>`;
+  }else{ // listen
+    c.innerHTML = `<button class="listenbtn" id="qlisten" aria-label="もう一度聞く">🔊</button>`;
+  }
+  if($("qspeak")) $("qspeak").onclick=()=>speak(phrase.cn);
+  if($("qlisten")){ $("qlisten").onclick=()=>speak(phrase.cn); setTimeout(()=>speak(phrase.cn),350); }
+
+  // 選択肢
+  const o=$("opts");o.innerHTML="";
+  opts.forEach((p,i)=>{
+    const b=document.createElement("button");
+    b.className="opt"+(dim==="cn"?" cn":"");
+    b.style.position="relative";
+    const main = dim==="cn"?p.cn:p.jp;
+    const sub  = (dim==="cn"&&S.pinyin)?`<span class="os">${p.py}</span>`:``;
+    b.innerHTML=`<span class="om">${main}</span>${sub}`;
+    b.onclick=()=>answer(i,b);
+    o.appendChild(b);
+  });
+}
+
+function answer(i,btn){
+  if(S.locked)return; S.locked=true;
+  const {phrase,opts,dim,type}=S.current;
+  const chosen=opts[i];
+  const ok = chosen===phrase;
+  const buttons=[...$("opts").children];
+
+  // 正解ボタンを特定
+  const correctIdx = opts.indexOf(phrase);
+  buttons.forEach((b,k)=>{
+    b.disabled=true;
+    if(k===correctIdx) b.classList.add("correct");
+    else if(k===i) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+
+  // 結果ドット
+  const dot=$("dots").children[S.idx];
+  dot.classList.add(ok?"ok":"ng");
+
+  const taxi=$("taxi");
+  if(ok){
+    S.combo++; S.maxCombo=Math.max(S.maxCombo,S.combo); S.correct++;
+    const pts=100+(S.combo-1)*20; S.score+=pts;
+    sfxCorrect();
+    taxi.classList.remove("brake");void taxi.offsetWidth;taxi.classList.add("run");
+    bumpCombo(); flashPanda("cheer");
+    showVerdict(true,pts);
+    speak(phrase.cn);
+    // 正解は気持ちよく自動で次へ
+    setTimeout(()=>{ S.idx++; advance(); }, 950);
+  }else{
+    S.combo=0;
+    if(S.hard){ S.hearts=Math.max(0,S.hearts-1); renderHearts(); }
+    sfxWrong();
+    taxi.classList.remove("run");void taxi.offsetWidth;taxi.classList.add("brake");
+    $("combo").className="combo"; flashPanda("dizzy");
+    showVerdict(false);
+    speak(phrase.cn);
+    // 不正解は答えを読んで「次へ」で進む
+  }
+}
+
+function showVerdict(ok,pts){
+  const last = S.idx>=TOTAL-1 || (S.hard && S.hearts<=0);
+  const fb=$("feedback");
+  const {phrase}=S.current;
+  const chip = `<div class="answer-chip">
+      <span class="ac-cn">${phrase.cn}</span><span class="ac-py">${phrase.py}</span>
+      <span class="ac-jp">${phrase.jp}</span></div>`;
+  if(ok){
+    fb.innerHTML=`<div class="verdict ok">正解！ <span style="font-size:14px">+${pts}点</span></div>`;
+  }else{
+    const next = last? "結果を見る ▶" : "次へ ▶";
+    fb.innerHTML=`<div class="verdict ng">おしい！正解はこちら</div>${chip}
+      <button class="next" id="nextbtn">${next}</button>`;
+    $("nextbtn").onclick=()=>{ S.idx++; advance(); };
+  }
+}
+
+function advance(){
+  // ゲームオーバー判定（ハート制のみ）
+  if(S.hard && S.hearts<=0){ return finish(false); }
+  if(S.idx>=TOTAL){ return finish(true); }
+  $("score").innerHTML=S.score.toLocaleString()+'<small>点</small>';
+  renderQuestion();
+}
+
+/* コンボ表示 */
+function bumpCombo(){
+  $("score").innerHTML=S.score.toLocaleString()+'<small>点</small>';
+  const c=$("combo");
+  if(S.combo>=2){
+    c.textContent=`🔥×${S.combo}`;
+    c.className="combo on pump";
+    setTimeout(()=>c.classList.remove("pump"),200);
+  }else{ c.className="combo"; }
+}
+
+/* シーン上のパンダ運転手の表情をちらっと（タクシー内パンダは固定なので、こちらは演出用に屋根上へ） */
+function flashPanda(){ /* タクシー内のパンダは固定。演出は taxi の run/brake で表現。 */ }
+
+/* ============================================================
+   リザルト
+   ============================================================ */
+function finish(arrived){
+  const acc = S.idx>0 ? S.correct/Math.max(S.idx,1) : 0;
+  const accAll = S.correct/TOTAL;
+  // 最終位置：到着なら旗まで、途中下車ならその場
+  placeTaxi(arrived ? TOTAL-1 : Math.min(S.idx,TOTAL-1));
+
+  let mood, arriveText, stampText, stampGold=false;
+  if(!arrived){
+    mood="sad"; arriveText="途中下車…🚧";
+    stampText="🛑 もう一度チャレンジ"; 
+  }else{
+    arriveText="目的地に到着！🏁";
+    if(accAll>=1){ mood="cheer"; stampText="🏆 達人ドライバー"; stampGold=true; }
+    else if(accAll>=0.85){ mood="cheer"; stampText="⭐ ベテラン運転手"; stampGold=true; }
+    else if(accAll>=0.70){ mood="happy"; stampText="👍 一人前ドライバー"; }
+    else if(accAll>=0.50){ mood="happy"; stampText="🔰 見習い運転手"; }
+    else { mood="normal"; stampText="🐣 まだまだ修行中"; }
+  }
+
+  $("result-mascot").innerHTML=panda(mood);
+  $("arrive-text").textContent=arriveText;
+  $("rank-stamp").innerHTML=`<div class="stamp ${stampGold?'gold':''}">${stampText}</div>`;
+  $("st-correct").textContent=`${S.correct}/${TOTAL}`;
+  $("st-combo").textContent=S.maxCombo;
+  $("st-score").textContent=S.score.toLocaleString();
+
+  show("result");
+  if(arrived){ sfxArrive(); if(accAll>=0.70) celebrate(); }
+}
+
+/* 紙吹雪 */
+function celebrate(){
+  if(reduced)return;
+  const colors=["#FDC72F","#22B573","#FF5B4D","#FFB02E","#7fc8ff","#fff"];
+  for(let i=0;i<90;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[i%colors.length];
+    c.style.animationDuration=(1.6+Math.random()*1.4)+"s";
+    c.style.animationDelay=(Math.random()*0.5)+"s";
+    c.style.transform=`rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3200);
+  }
+}
+
+/* ============================================================
+   初期化・イベント
+   ============================================================ */
+function initHome(){
+  $("home-mascot").innerHTML=panda("happy");
+  $("home-tip").innerHTML=TIPS[Math.floor(Math.random()*TIPS.length)];
+  buildScene(); // 背景のシーンを最初から表示
+}
+
+["tg-pinyin","tg-sound","tg-hard"].forEach(id=>{
+  $(id).addEventListener("click",()=>{$(id).classList.toggle("on");});
+});
+$("btn-start").addEventListener("click",startGame);
+$("btn-retry").addEventListener("click",startGame);
+$("btn-home").addEventListener("click",()=>{ initHome(); show("home"); });
+
+initHome();
+show("home");
+</script>
+</body>
+</html>
