@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5分間実践会話 ｜ テーマ別（簡体字＋ピンイン）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=Nunito:ital,wght@0,500;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3F7EC;
+    --paper:#FFFFFF;
+    --ink:#2E2E2E;
+    --green-deep:#4C7A2A;
+    --green:#6FA63C;
+    --green-soft:#9CCC65;
+    --muted:#7C896E;
+    --line:#E3EBD7;
+    --hl:#FBE583;
+    --hl-edge:#F2CE3C;
+    --disp:'Zen Maru Gothic','Noto Sans JP',sans-serif;
+    --cn:'Noto Sans SC','Noto Sans JP',sans-serif;
+    --jp:'Noto Sans JP',sans-serif;
+    --py:'Nunito','Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--jp);
+    line-height:1.5;
+    padding:28px 16px 64px;
+    background-image:radial-gradient(circle at 12% 0%, rgba(156,204,101,.12), transparent 42%),
+                     radial-gradient(circle at 92% 4%, rgba(111,166,60,.10), transparent 40%);
+  }
+  .wrap{max-width:780px;margin:0 auto}
+
+  /* ---------- header ---------- */
+  header{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:24px;
+    padding:26px 26px 22px;
+    box-shadow:0 10px 30px -22px rgba(76,122,42,.45);
+    position:relative;
+    overflow:hidden;
+  }
+  .panda{flex:0 0 auto;width:78px;height:78px;display:block}
+  .head-top{display:flex;align-items:center;gap:18px}
+  .titles{min-width:0}
+  .eyebrow{
+    font-family:var(--py);
+    font-weight:700;
+    letter-spacing:.22em;
+    font-size:12px;
+    color:var(--green);
+    text-transform:uppercase;
+    margin-bottom:4px;
+  }
+  h1{
+    font-family:var(--disp);
+    font-weight:900;
+    font-size:clamp(26px,6vw,36px);
+    color:var(--ink);
+    letter-spacing:.01em;
+    line-height:1.12;
+  }
+  .sub{
+    margin-top:7px;
+    font-family:var(--jp);
+    font-weight:500;
+    font-size:13.5px;
+    color:var(--muted);
+  }
+  .sub b{color:var(--green-deep);font-weight:700}
+  .lead{
+    margin-top:16px;
+    padding-top:15px;
+    border-top:1px dashed var(--line);
+    font-size:13px;
+    color:var(--muted);
+    line-height:1.7;
+  }
+
+  /* ---------- practice toolbar ---------- */
+  .tools{
+    display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+    margin:18px 2px 6px;
+  }
+  .tools .lbl{font-size:11.5px;color:var(--muted);font-weight:700;letter-spacing:.04em;margin-right:2px}
+  .toggle{
+    font-family:var(--jp);
+    font-weight:700;
+    font-size:12.5px;
+    color:var(--green-deep);
+    background:var(--paper);
+    border:1.5px solid var(--green-soft);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    transition:all .15s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .toggle:hover{border-color:var(--green)}
+  .toggle:focus-visible{outline:3px solid rgba(111,166,60,.4);outline-offset:2px}
+  .toggle[aria-pressed="true"]{
+    background:var(--green-deep);
+    color:#fff;
+    border-color:var(--green-deep);
+  }
+  .toggle .x{opacity:.55;font-size:11px}
+  .spacer{flex:1 1 auto}
+  .printbtn{
+    font-family:var(--jp);font-weight:700;font-size:12.5px;
+    color:var(--muted);background:transparent;border:none;cursor:pointer;
+    padding:6px 6px;text-decoration:underline;text-underline-offset:3px;
+  }
+  .printbtn:hover{color:var(--green-deep)}
+
+  /* ---------- sections ---------- */
+  section.theme{margin-top:26px}
+  .theme-head{display:flex;align-items:baseline;gap:12px;padding:0 4px 12px}
+  .theme-num{
+    font-family:var(--py);font-weight:700;font-size:13px;
+    color:#fff;background:var(--green);
+    border-radius:8px;padding:3px 9px;flex:0 0 auto;
+    box-shadow:0 4px 10px -5px rgba(111,166,60,.8);
+  }
+  .theme-jp{font-family:var(--disp);font-weight:700;font-size:18px;color:var(--ink)}
+  .theme-cn{font-family:var(--cn);font-weight:500;font-size:14px;color:var(--green-deep);opacity:.85}
+  .theme-rule{flex:1 1 auto;height:1px;background:var(--line);align-self:center}
+
+  /* ---------- cards ---------- */
+  .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:15px 18px 16px 16px;
+    margin:0 0 11px;
+    display:flex;gap:14px;align-items:flex-start;
+    box-shadow:0 6px 18px -16px rgba(76,122,42,.5);
+    break-inside:avoid;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .card:hover{border-color:var(--green-soft)}
+  .n{
+    flex:0 0 auto;
+    font-family:var(--py);font-weight:700;font-size:13px;
+    color:var(--green-deep);
+    width:26px;height:26px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:#EEF5E2;margin-top:4px;
+  }
+  .body{min-width:0;flex:1 1 auto}
+  .py{
+    font-family:var(--py);font-weight:600;font-style:italic;
+    font-size:14px;color:var(--green);
+    letter-spacing:.01em;margin-bottom:1px;
+  }
+  .cn{
+    font-family:var(--cn);font-weight:700;
+    font-size:clamp(22px,5.4vw,27px);
+    color:var(--ink);line-height:1.32;
+    letter-spacing:.02em;
+  }
+  .jp{
+    font-family:var(--jp);font-weight:500;
+    font-size:13.5px;color:var(--muted);
+    margin-top:5px;line-height:1.55;
+  }
+
+  /* highlighted key line — echoes the marker in the original */
+  .card.hl{
+    border-color:var(--hl-edge);
+    background:linear-gradient(0deg, #FFFDF2, #FFFDF2);
+    box-shadow:0 6px 20px -14px rgba(242,206,60,.7);
+  }
+  .card.hl .n{background:var(--hl);color:#7A5E00}
+  .card.hl .cn{
+    background:linear-gradient(transparent 58%, var(--hl) 58% 92%, transparent 92%);
+    display:inline;
+    padding:0 2px;
+    box-decoration-break:clone;-webkit-box-decoration-break:clone;
+  }
+  .card.hl .py{color:var(--hl-edge)}
+  .star{
+    font-size:11px;color:var(--hl-edge);font-weight:700;
+    font-family:var(--py);letter-spacing:.1em;margin-bottom:3px;
+    display:inline-block;
+  }
+
+  /* ---------- hide states for practice ---------- */
+  body.hide-py .py{visibility:hidden}
+  body.hide-jp .jp{visibility:hidden}
+  body.hide-cn .cn{visibility:hidden}
+  body.hide-cn .card.hl .cn{background:none}
+
+  /* ---------- footer ---------- */
+  footer{
+    margin-top:30px;text-align:center;
+    font-size:11.5px;color:var(--muted);line-height:1.7;
+  }
+  footer .dot{color:var(--green-soft);margin:0 6px}
+
+  /* ---------- load anim ---------- */
+  .wrap{animation:rise .5s ease both}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.wrap{animation:none}.card,.toggle{transition:none}}
+
+  /* ---------- print ---------- */
+  @media print{
+    body{background:#fff;padding:0;background-image:none}
+    .tools{display:none}
+    header,.card{box-shadow:none}
+    .card:hover{transform:none}
+    section.theme{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="head-top">
+      <svg class="panda" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="pbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9CCC65"/><stop offset="1" stop-color="#558B2F"/></linearGradient>
+          <radialGradient id="pface" cx="0.5" cy="0.38" r="0.7"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#EFEFEA"/></radialGradient>
+        </defs>
+        <rect x="0" y="0" width="240" height="240" rx="54" fill="url(#pbg)"/>
+        <path d="M168 70 L160 90 L182 73 Z" fill="#FFFFFF"/>
+        <rect x="150" y="24" width="68" height="48" rx="15" fill="#FFFFFF"/>
+        <text x="184" y="56" font-family="'Noto Sans SC',sans-serif" font-size="24" font-weight="700" fill="#558B2F" text-anchor="middle">你好</text>
+        <circle cx="80" cy="100" r="25" fill="#2E2E2E"/><circle cx="160" cy="100" r="25" fill="#2E2E2E"/>
+        <ellipse cx="120" cy="145" rx="66" ry="60" fill="url(#pface)"/>
+        <circle cx="74" cy="162" r="8.5" fill="#F6A8BC" opacity="0.65"/><circle cx="166" cy="162" r="8.5" fill="#F6A8BC" opacity="0.65"/>
+        <ellipse cx="98" cy="140" rx="19" ry="25" fill="#2E2E2E" transform="rotate(-20 98 140)"/>
+        <ellipse cx="142" cy="140" rx="19" ry="25" fill="#2E2E2E" transform="rotate(20 142 140)"/>
+        <circle cx="100" cy="144" r="8" fill="#FFFFFF"/><circle cx="140" cy="144" r="8" fill="#FFFFFF"/>
+        <circle cx="102" cy="146" r="4.6" fill="#2E2E2E"/><circle cx="138" cy="146" r="4.6" fill="#2E2E2E"/>
+        <circle cx="103.6" cy="144.2" r="1.7" fill="#FFFFFF"/><circle cx="139.6" cy="144.2" r="1.7" fill="#FFFFFF"/>
+        <ellipse cx="120" cy="166" rx="9" ry="6.5" fill="#2E2E2E"/>
+        <path d="M120 172 L120 178" stroke="#2E2E2E" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M106 176 Q120 189 134 176" stroke="#2E2E2E" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </svg>
+      <div class="titles">
+        <div class="eyebrow">D ・ Theme-based</div>
+        <h1>5分間実践会話</h1>
+        <div class="sub">中国語会話 ｜ <b>簡体字 ＋ ピンイン ＋ 日本語</b></div>
+      </div>
+    </div>
+    <p class="lead">フルーツや食べ物の雑談から、会社の改革をめぐる本音まで——ひとつの会話を5つのテーマに分けて練習します。上から順に声に出して読んでみましょう。</p>
+  </header>
+
+  <div class="tools">
+    <span class="lbl">練習モード：</span>
+    <button class="toggle" data-key="py" aria-pressed="false">ピンイン <span class="x">隠す</span></button>
+    <button class="toggle" data-key="jp" aria-pressed="false">日本語 <span class="x">隠す</span></button>
+    <button class="toggle" data-key="cn" aria-pressed="false">中国語 <span class="x">隠す</span></button>
+    <span class="spacer"></span>
+    <button class="printbtn" id="printBtn">印刷 / PDF</button>
+  </div>
+
+  <main id="sheet"></main>
+
+  <footer>
+    全27フレーズ<span class="dot">●</span>簡体字・ピンイン・日本語訳つき<span class="dot">●</span>しゅうしゅう先生 中国語レッスン
+  </footer>
+
+</div>
+
+<script>
+const DATA = [
+  { num:"1", jp:"フルーツ", cn:"水果", items:[
+    {py:"bù xǐhuan shuǐguǒ", cn:"不喜欢水果", jp:"果物が好きじゃない"},
+    {py:"xǐhuan guǒzhī", cn:"喜欢果汁", jp:"ジュースは好き"},
+    {py:"hěn máfan", cn:"很麻烦", jp:"（皮むきなどが）面倒くさい"},
+    {py:"shuǐguǒ yǒu zhǒngzi", cn:"水果有种子", jp:"果物には種がある"},
+    {py:"yào xiāopí", cn:"要削皮", jp:"皮をむかないといけない"},
+  ]},
+  { num:"2", jp:"食べ物・地方", cn:"吃的・地方", items:[
+    {py:"xǐhuan yángròulú, hǎixiān", cn:"喜欢羊肉炉、海鲜", jp:"羊肉鍋（ラム鍋）や海鮮が好き"},
+    {py:"bǐqǐ qù nánfāng, dōngběi hěn shìhé nǐ", cn:"比起去南方，东北很适合你", jp:"南へ行くより、東北のほうがあなたに合っている"},
+    {py:"dōngběirén huì zhíjiē shuō", cn:"东北人会直接说", jp:"東北の人ははっきり（率直に）言う"},
+  ]},
+  { num:"3", jp:"仕事・新しい挑戦", cn:"工作", items:[
+    {py:"gōngsī zěnmeyàng?", cn:"公司怎么样？", jp:"会社はどう？"},
+    {py:"wǒ xiǎng zuò xīn de dōngxi", cn:"我想做新的东西", jp:"新しいものを作りたい"},
+    {py:"bǐrú shuō?", cn:"比如说？", jp:"例えば？"},
+    {py:"bǐrú shuō xīn chǎnpǐn", cn:"比如说新产品", jp:"例えば新製品"},
+    {py:"kěshì tāmen bùxiǎng zuò", cn:"可是他们不想做", jp:"でも彼らはやりたがらない"},
+    {py:"wèishénme?", cn:"为什么？", jp:"なぜ？"},
+  ]},
+  { num:"4", jp:"改革をめぐる本音", cn:"改革", items:[
+    {py:"tāmen bùxiǎng gǎigé", cn:"他们不想改革", jp:"彼らは改革したくない"},
+    {py:"rúguǒ shībài le, bùxiǎng fù zérèn", cn:"如果失败了，不想负责任", jp:"もし失敗したら、責任を取りたくない"},
+    {py:"yǒurén xiǎng gǎigé, yǒurén bùxiǎng gǎigé", cn:"有人想改革，有人不想改革", jp:"改革したい人もいれば、したくない人もいる"},
+    {py:"nǎge bǐlì bǐjiào gāo? yíbàn yíbàn", cn:"哪个比例比较高？一半一半", jp:"どちらの割合が高い？──半々"},
+    {py:"bùxiǎng gǎigé de rén", cn:"不想改革的人", jp:"改革したくない人（について言うと）"},
+    {py:"nǔlì de rén yǒu sān wèi", cn:"努力的人有三位", jp:"努力している人は3人"},
+    {py:"xiǎng gǎigé dànshì bù zhīdào gāi zěnme bàn de rén yǒu wǔ wèi", cn:"想改革但是不知道该怎么办的人有五位", jp:"改革したいけど、どうすればいいか分からない人は5人"},
+    {py:"bùxiǎng gǎigé de rén yǒu liǎng wèi", cn:"不想改革的人有两位", jp:"改革したくない人は2人", hl:true},
+    {py:"dànshì gǎigé de quánlì zài bùxiǎng gǎigé de rén shǒushàng", cn:"但是改革的权力在不想改革的人手上", jp:"でも改革の権力は、改革したくない人の手にある"},
+    {py:"wèile gǎigé jiàn de xīn bùmén", cn:"为了改革建的新部门", jp:"改革のために作った新しい部門"},
+    {py:"kěshì yǒuquán de rén bùxiǎng gǎigé", cn:"可是有权的人不想改革", jp:"でも権力を持つ人は改革したくない"},
+    {py:"bùnéng jiǎng zhēnhuà", cn:"不能讲真话", jp:"本当のことが言えない"},
+  ]},
+  { num:"5", jp:"帰省", cn:"回家", items:[
+    {py:"zhōngyuánjié huí rìběn", cn:"中元节回日本", jp:"お盆（中元節）に日本へ帰る"},
+  ]},
+];
+
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const sheet = document.getElementById("sheet");
+let n = 0;
+DATA.forEach(sec => {
+  const s = document.createElement("section");
+  s.className = "theme";
+  s.innerHTML = `<div class="theme-head">
+      <span class="theme-num">${sec.num}</span>
+      <span class="theme-jp">${esc(sec.jp)}</span>
+      <span class="theme-cn">${esc(sec.cn)}</span>
+      <span class="theme-rule"></span>
+    </div>`;
+  sec.items.forEach(it => {
+    n++;
+    const card = document.createElement("div");
+    card.className = "card" + (it.hl ? " hl" : "");
+    card.innerHTML = `<div class="n">${n}</div>
+      <div class="body">
+        ${it.hl ? '<div class="star">★ KEY</div>' : ''}
+        <div class="py">${esc(it.py)}</div>
+        <div class="cn">${esc(it.cn)}</div>
+        <div class="jp">${esc(it.jp)}</div>
+      </div>`;
+    s.appendChild(card);
+  });
+  sheet.appendChild(s);
+});
+
+document.querySelectorAll(".toggle").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const key = btn.dataset.key;
+    const on = btn.getAttribute("aria-pressed") === "true";
+    btn.setAttribute("aria-pressed", String(!on));
+    document.body.classList.toggle("hide-" + key, !on);
+  });
+});
+document.getElementById("printBtn").addEventListener("click", () => window.print());
+</script>
+</body>
+</html>
